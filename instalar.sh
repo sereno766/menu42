@@ -8,7 +8,7 @@ DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
 DEST="$HOME/.local/share/applications/menu-scripts.desktop"
 LOCAL="$DIR/menu-scripts.desktop"
 
-chmod +x "$DIR/menu.py" 2>/dev/null
+chmod +x "$DIR/menu.py" "$DIR/menu.sh" 2>/dev/null
 chmod +x "$DIR"/scripts/*.sh 2>/dev/null
 
 gerar() {
@@ -20,7 +20,7 @@ Name=Menu de Scripts
 Name[pt_BR]=Menu de Scripts
 Comment=Aciona os scripts da pasta por uma interface grafica
 Comment[pt_BR]=Aciona os scripts da pasta por uma interface grafica
-Exec=$DIR/menu.py
+Exec=$DIR/menu.sh
 Path=$DIR
 Icon=system-lock-screen
 Terminal=false
@@ -59,4 +59,4 @@ echo "Procure por 'Menu de Scripts' no menu de aplicativos ou use o icone da Are
 
 # Abre o menu logo apos instalar
 echo "Abrindo o menu..."
-exec "$DIR/menu.py"
+exec "$DIR/menu.sh"
