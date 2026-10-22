@@ -35,11 +35,14 @@ Cada botão aciona um script. Os scripts que rodam em segundo plano têm um bot�
 
 ### O que o `instalar.sh` faz
 
-1. **Instala as dependências** que estiverem faltando via `apt` (pede `sudo`):
-   `x11-xserver-utils`, `xsel`, `xinput`, `wl-clipboard`, `python3-tk`.
+1. **Instala as dependências** que estiverem faltando via `apt`
+   (`x11-xserver-utils`, `xsel`, `xinput`, `wl-clipboard`, `python3-tk`).
+   Precisa de `sudo`; **sem `sudo` essa etapa é pulada sem travar** e o menu
+   funciona do mesmo jeito (os itens pulados são opcionais).
 2. Descobre sozinho o caminho atual e (re)gera o lançador `menu-scripts.desktop`.
 3. Registra em `~/.local/share/applications/` (aparece no menu de aplicativos).
-4. Abre o menu.
+4. **Abre o menu**, escolhendo automaticamente um Python que tenha tkinter
+   (útil quando o `/usr/bin/python3` não tem, mas o do `pyenv` tem).
 
 **Moveu a pasta de lugar?** Basta rodar `./instalar.sh` de novo.
 
