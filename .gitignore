@@ -1,3 +1,6 @@
 # perfis temporarios criados pelo abrir_video.sh ficam em /tmp (nao versionar)
 *.pyc
 __pycache__/
+
+# lancador gerado pelo instalar.sh (caminho especifico de cada maquina)
+menu-scripts.desktop
