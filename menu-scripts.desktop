@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Menu de Scripts
+Name[pt_BR]=Menu de Scripts
+Comment=Aciona os scripts da pasta por uma interface grafica
+Comment[pt_BR]=Aciona os scripts da pasta por uma interface grafica
+Exec=/home/smachado/42sp/testar/menu.py
+Path=/home/smachado/42sp/testar
+Icon=utilities-terminal
+Terminal=false
+Categories=Utility;

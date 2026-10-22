@@ -1,0 +1,3 @@
+# perfis temporarios criados pelo abrir_video.sh ficam em /tmp (nao versionar)
+*.pyc
+__pycache__/
