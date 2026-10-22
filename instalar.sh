@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# instalar.sh - gera e instala o lancador .desktop apontando para esta pasta.
+# instalar.sh - instala o lancador .desktop e abre o menu.
+# Faz tudo num comando: (1) instala dependencias (se houver sudo),
+# (2) registra o lancador no menu de aplicativos e (3) abre o menu.
 # Rode novamente sempre que mover a pasta de lugar.
 
 # Descobre o diretorio onde este script esta, nao importa de onde foi chamado
@@ -56,7 +58,7 @@ instalar_dependencias
 DEST="$HOME/.local/share/applications/menu-scripts.desktop"
 LOCAL="$DIR/menu-scripts.desktop"
 
-chmod +x "$DIR/menu.py" "$DIR/menu.sh" 2>/dev/null
+chmod +x "$DIR/menu.py" 2>/dev/null
 chmod +x "$DIR"/scripts/*.sh 2>/dev/null
 
 gerar() {
@@ -68,7 +70,7 @@ Name=Menu de Scripts
 Name[pt_BR]=Menu de Scripts
 Comment=Aciona os scripts da pasta por uma interface grafica
 Comment[pt_BR]=Aciona os scripts da pasta por uma interface grafica
-Exec=$DIR/menu.sh
+Exec=$DIR/instalar.sh
 Path=$DIR
 Icon=system-lock-screen
 Terminal=false
@@ -93,6 +95,27 @@ echo "Lancador instalado apontando para:"
 echo "  $DIR"
 echo "Procure por 'Menu de Scripts' no menu de aplicativos."
 
-# Abre o menu logo apos instalar
+# --- Abre o menu ----------------------------------------------------------
+# Encontra um Python que tenha tkinter (/usr/bin/python3 pode nao ter; o do
+# pyenv tem). Usa o primeiro candidato em que 'import tkinter' funcionar.
 echo "Abrindo o menu..."
-exec "$DIR/menu.sh"
+for py in \
+    python3 \
+    "$HOME/.pyenv/shims/python3" \
+    /opt/pyenv/shims/python3 \
+    /usr/local/bin/python3 \
+    python; do
+    if command -v "$py" >/dev/null 2>&1 && "$py" -c "import tkinter" 2>/dev/null; then
+        exec "$py" "$DIR/menu.py"
+    fi
+done
+
+# Nenhum Python com tkinter encontrado.
+MSG="Nenhum Python com tkinter encontrado.
+Instale com: sudo apt install python3-tk"
+if command -v zenity >/dev/null 2>&1; then
+    zenity --error --no-wrap --text="$MSG"
+else
+    echo "$MSG" >&2
+fi
+exit 1

@@ -23,23 +23,17 @@ menu42/
 
 ## Uso
 
-### Abrir o menu
+Um único comando faz tudo — instala o lançador e abre o menu:
 
 ```sh
-./menu.py
+./instalar.sh
 ```
 
 Cada botão aciona um script. Os scripts que rodam em segundo plano têm um botão
 **Parar** ao lado. Ao fechar o menu (pelo **X** ou pelo botão **Sair**), ele abre
 `recursos/aviso.txt` com o lembrete.
 
-### Instalar como aplicativo (ícone no menu de aplicativos)
-
-```sh
-./instalar.sh
-```
-
-O instalador faz tudo de uma vez:
+### O que o `instalar.sh` faz
 
 1. **Instala as dependências** que estiverem faltando via `apt` (pede `sudo`):
    `x11-xserver-utils`, `xsel`, `xinput`, `wl-clipboard`, `python3-tk`.
