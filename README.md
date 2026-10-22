@@ -39,8 +39,14 @@ Cada botão aciona um script. Os scripts que rodam em segundo plano têm um bot�
 ./instalar.sh
 ```
 
-O instalador descobre sozinho o caminho atual, (re)gera o lançador
-`menu-scripts.desktop`, registra em `~/.local/share/applications/` e abre o menu.
+O instalador faz tudo de uma vez:
+
+1. **Instala as dependências** que estiverem faltando via `apt` (pede `sudo`):
+   `x11-xserver-utils`, `xsel`, `xinput`, `wl-clipboard`, `python3-tk`.
+2. Descobre sozinho o caminho atual e (re)gera o lançador `menu-scripts.desktop`.
+3. Registra em `~/.local/share/applications/` e cria um ícone na Área de Trabalho.
+4. Abre o menu.
+
 **Moveu a pasta de lugar?** Basta rodar `./instalar.sh` de novo.
 
 ## Os scripts

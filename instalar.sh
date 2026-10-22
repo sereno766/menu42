@@ -5,6 +5,43 @@
 # Descobre o diretorio onde este script esta, nao importa de onde foi chamado
 DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
 
+# --- Dependencias ---------------------------------------------------------
+# Instala automaticamente o que estiver faltando (precisa de apt + sudo).
+instalar_dependencias() {
+    command -v apt-get >/dev/null 2>&1 || {
+        echo "apt-get nao encontrado; pulando instalacao de dependencias."
+        return
+    }
+
+    pkgs=""
+    # Comando ausente -> pacote que o fornece
+    command -v xrandr  >/dev/null 2>&1 || pkgs="$pkgs x11-xserver-utils"
+    command -v xsel    >/dev/null 2>&1 || pkgs="$pkgs xsel"
+    command -v xinput  >/dev/null 2>&1 || pkgs="$pkgs xinput"
+    command -v wl-copy >/dev/null 2>&1 || pkgs="$pkgs wl-clipboard"
+    # tkinter no python do sistema (o menu precisa de tkinter em algum python)
+    /usr/bin/python3 -c "import tkinter" >/dev/null 2>&1 || pkgs="$pkgs python3-tk"
+
+    # Remove espacos das pontas
+    pkgs="$(echo "$pkgs" | xargs)"
+    if [ -z "$pkgs" ]; then
+        echo "Dependencias ja satisfeitas."
+        return
+    fi
+
+    echo "Instalando dependencias: $pkgs"
+    SUDO=""
+    [ "$(id -u)" -ne 0 ] && SUDO="sudo"
+    if $SUDO apt-get update -qq && $SUDO apt-get install -y $pkgs; then
+        echo "Dependencias instaladas."
+    else
+        echo "AVISO: nao foi possivel instalar: $pkgs" >&2
+        echo "       Instale manualmente: sudo apt install $pkgs" >&2
+    fi
+}
+
+instalar_dependencias
+
 DEST="$HOME/.local/share/applications/menu-scripts.desktop"
 LOCAL="$DIR/menu-scripts.desktop"
 
