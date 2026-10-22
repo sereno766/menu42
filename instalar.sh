@@ -13,6 +13,19 @@ instalar_dependencias() {
         return
     }
 
+    # Precisa poder usar sudo sem travar pedindo senha (ou ja ser root).
+    SUDO=""
+    if [ "$(id -u)" -ne 0 ]; then
+        if command -v sudo >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
+            SUDO="sudo"
+        else
+            echo "Sem permissao de sudo: pulando instalacao de dependencias."
+            echo "O menu funciona assim mesmo; itens opcionais (xinput, wl-clipboard)"
+            echo "so sao instalaveis por quem tiver sudo."
+            return
+        fi
+    fi
+
     pkgs=""
     # Comando ausente -> pacote que o fornece
     command -v xrandr  >/dev/null 2>&1 || pkgs="$pkgs x11-xserver-utils"
@@ -30,8 +43,6 @@ instalar_dependencias() {
     fi
 
     echo "Instalando dependencias: $pkgs"
-    SUDO=""
-    [ "$(id -u)" -ne 0 ] && SUDO="sudo"
     if $SUDO apt-get update -qq && $SUDO apt-get install -y $pkgs; then
         echo "Dependencias instaladas."
     else
